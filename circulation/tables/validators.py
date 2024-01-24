@@ -11,6 +11,6 @@ def validate_telephone_number(number):
         )
 
 
-def numeric_only(code):
-    if postcode.isdigit() is False:
-        raise ValidationError('Почтовый индекс должен содержать только цифры')
+def numeric_only(operatore_code):
+    if operatore_code.isdigit() is False:
+        raise ValidationError('Код оператора должен содержать только цифры')
