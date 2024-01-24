@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5bc30466-2a3b-425d-a5be-736f7df0e5b4",
+		"_postman_id": "8a43cb25-7ca6-46cf-af36-c986609943b8",
 		"name": "Circulation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26429239"
@@ -79,7 +79,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"text\": \"Circulation works\",\r\n    \"filters\":[{\"filter\":2, \"value\":\"Неактивен\"}, {\"filter\":1, \"value\":\"925\"}],\r\n    \"time\": \"2025-01-23T17:35:58.850130Z\"\r\n    \r\n}",
+					"raw": "{\r\n    \"text\": \"Circulation works for clients with tag Малоктивен and telephone_code 925\",\r\n    \"filters\":[{\"filter\":2, \"value\":\"Малоктивен\"}, {\"filter\":1, \"value\":\"925\"}],\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
