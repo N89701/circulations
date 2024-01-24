@@ -1,16 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils.timezone import now
-from django.utils import timezone
 
 from celery_app.tasks import send_messages
 from tables.validators import numeric_only, validate_telephone_number
-
-
 
 
 class Tag(models.Model):
