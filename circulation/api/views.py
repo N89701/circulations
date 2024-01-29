@@ -9,7 +9,7 @@ from tables.models import Circulation, Client, Message
 
 
 class CirculationViewSet(ModelViewSet):
-    queryset = Circulation.objects.all()
+    queryset = Circulation.objects.all().prefetch_related('filters')
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -18,7 +18,7 @@ class CirculationViewSet(ModelViewSet):
 
 
 class ClientViewSet(ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = Client.objects.all().prefetch_related('tags')
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -27,5 +27,5 @@ class ClientViewSet(ModelViewSet):
 
 
 class MessageViewSet(ModelViewSet):
-    queryset = Message.objects.all()
+    queryset = Message.objects.all().select_related('circulation', 'client')
     serializer_class = MessageSerializer

@@ -1,40 +1,30 @@
 from celery import shared_task
+from django.db.models import Q
 from django.utils import timezone
 
 
 @shared_task
 def send_messages(circulation_id):
+    """Отложенная задача по извлечению объекта рассылки, фильтрации
+    пользователей согласно указанным фильтрам и созданию сообщений в БД"""
     from tables.models import Circulation, CirculationFilter, Client, Message
     try:
         circulation = Circulation.objects.get(id=circulation_id)
-
-        circulation_filters = CirculationFilter.objects.filter(
-            circulation=circulation
-        )
-        clients = Client.objects.all().prefetch_related('tags')
-        for filter in circulation_filters:
-            filter_value = filter.value
+        filters = circulation.circulationfilter_set.all()
+        query = Q()
+        for filter in filters:
             if filter.filter.pk == 1:
-                clients = Client.objects.filter(operatore_code=filter_value)
+                query &= Q(operatore_code=filter.value)
             else:
-                clients = Client.objects.filter(tags__name=filter_value)
-
-        for client in clients:
-            if circulation.endtime is not None:
-                deadline = circulation.endtime
-                for client in clients:
-                    if timezone.now() < deadline:
-                        Message.objects.create(
-                            circulation=circulation,
-                            client=client,
-                            text=circulation.text
-                        )
-            else:
-                for client in clients:
-                    Message.objects.create(
-                        circulation=circulation,
-                        client=client,
-                        text=circulation.text
-                    )
+                query &= Q(tags__name=filter.value)
+        clients = Client.objects.filter(query).prefetch_related('tags')
+        if circulation.endtime is None or timezone.now() < circulation.endtime:
+            Message.objects.bulk_create(
+                Message(
+                    circulation=circulation,
+                    client=client,
+                    text=circulation.text
+                ) for client in clients
+            )
     except Circulation.DoesNotExist:
         pass

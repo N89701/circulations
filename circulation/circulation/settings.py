@@ -1,8 +1,13 @@
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-l%y@eyuk-9!jm8tjenq@5)1^o-bb+&i06-a0(zkrz_*%=j)na_"
+SECRET_KEY = os.getenv('SECRET_KEY', default='token')
 
 DEBUG = True
 
@@ -58,12 +63,12 @@ WSGI_APPLICATION = "circulation.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',        # Database name
-        'USER': 'postgres',        # Database user
-        'PASSWORD': 'postgres',    # Database password
-        'HOST': 'postgres',            # PostgreSQL service name in Docker Compose
-        'PORT': '5432',            # PostgreSQL default port
+        'ENGINE': os.getenv('ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('NAME', 'postgres'),
+        'USER': os.getenv('USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.getenv('HOST', 'postgres'),
+        'PORT': os.getenv('PORT', '5432'),
     }
 }
 
@@ -94,12 +99,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-
-
-
-
-
-
 CELERY_BROKER_URL = "redis://redis:6379/0"
+
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"

@@ -1,13 +1,8 @@
 from django.db import transaction
 from django.db.models import F
-from rest_framework.serializers import (
-    DateTimeField, ImageField, IntegerField, ModelSerializer,
-    PrimaryKeyRelatedField, SerializerMethodField, ValidationError
-)
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from tables.models import (
-    Circulation, CirculationFilter, Client, Filter, Message, Tag
-)
+from tables.models import Circulation, CirculationFilter, Client, Message, Tag
 
 
 class TagSerializer(ModelSerializer):
@@ -34,7 +29,6 @@ class CirculationCreateSerializer(ModelSerializer):
     def create(self, validated_data):
         filters = validated_data.pop('filters')
         circulation = Circulation.objects.create(**validated_data)
-        # circulation.filters.set(filters)
         self.circulationfilter_create(filters, circulation)
         return circulation
 
@@ -44,8 +38,8 @@ class CirculationCreateSerializer(ModelSerializer):
             CirculationFilter(
                 circulation=circulation,
                 filter=obj['filter'],
-                value=obj['value'])
-            for obj in objs
+                value=obj['value']
+            ) for obj in objs
         )
     
     def to_representation(self, instance):

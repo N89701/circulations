@@ -79,7 +79,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"text\": \"Circulation works for clients with tag Малоктивен and telephone_code 925\",\r\n    \"filters\":[{\"filter\":2, \"value\":\"Малоктивен\"}, {\"filter\":1, \"value\":\"925\"}],\r\n}",
+					"raw": "{\r\n    \"text\": \"Circulation works for clients with tag Малоактивен and telephone_code 925\",\r\n    \"filters\":[{\"filter\":2, \"value\":\"Малоактивен\"}, {\"filter\":1, \"value\":\"925\"}]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
